@@ -89,11 +89,11 @@ class Restrict extends CI_Controller
             die("Nenhum acesso de script direto permitido.");
 
         $config["upload_path"] = "./tmp/";
-        $config["allowed_type"] = "gif|png|jpg";
+        $config["allowed_types"] = "gif|png|jpg";
         $config["overwrite"] = TRUE;
 
         $this->load->library("upload", $config);
-
+        
         $json = array();
         $json["status"] = 1;
 

@@ -119,7 +119,7 @@
 						<div class="col-lg-10">
 
 							<!-- Modificação -->
-							<img src="" alt="" id="course_img_path" style="max-height:400px;max-height:400px" />
+							<img src="" alt="" id="course_img_path" style="max-height:300px;max-height:300px" />
 							<label class="btn btn-block btn-info">
 								<i class="fa fa-upload"></i>&nbsp;&nbsp;Importa imagem
 								<input type="file" id="btn_upload_course_img" accept="image/*" style="display:none">
@@ -131,9 +131,9 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-lg-2 control-label">Duração</label>
+						<label class="col-lg-2 control-label">Duração (h)</label>
 						<div class="col-lg-10">
-							<input type="number" min="0" id="course_duration" name="course_duration" class="form-control">
+							<input type="number" step="0.1" id="course_duration" name="course_duration" class="form-control">
 							<span class="help-block"></span>
 						</div>
 					</div>
@@ -186,12 +186,12 @@
 						<div class="col-lg-10">
 
 							<!-- Modificação -->
-							<img src="" alt="" id="member_img_path" style="max-height:400px;max-height:400px" />
+							<img src="" alt="" id="member_photo_path" style="max-height:400px;max-height:400px" />
 							<label class="btn btn-block btn-info">
 								<i class="fa fa-upload"></i>&nbsp;&nbsp;Importa foto
-								<input type="file" id="btn_upload_member_img" accept="image/*" style="display:none">
+								<input type="file" id="btn_upload_member_photo" accept="image/*" style="display:none">
 							</label>
-							<input id="member_img" name="member_img">
+							<input id="member_photo" name="member_photo">
 							<span class="help-block"></span>
 						</div>
 					</div>
