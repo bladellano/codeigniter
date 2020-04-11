@@ -13,6 +13,14 @@ function showErrors(error_list) {
     });
 }
 
+function showErrorsModal(error_list) {
+    clearErrors();
+    $.each(error_list, (id, msg) => {
+        $(id).parent().parent().addClass("has-error");
+        $(id).siblings(".help-block").html(msg);
+    });
+}
+
 function loadingImg(msg = null) {
     return `<i class='fa fa-circle-o-notch fa-spin'></i>&nbsp; ${msg}`;
 }
@@ -23,6 +31,7 @@ function uploadImg(input_file, img, input_path) {
 
     form_data = new FormData();
     form_data.append("image_file", img_file);
+
     $.ajax({
         url: BASE_URL + "restrict/ajaximportimage",
         dataType: "json",

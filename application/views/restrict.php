@@ -104,7 +104,7 @@
 				<h4 class="modal-title">Cursos</h4>
 			</div>
 			<div class="modal-body">
-				<div id="form_course">
+				<form id="form_course">
 					<input type="hidden" name="course_id">
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nome</label>
@@ -141,9 +141,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Descrição</label>
 						<div class="col-lg-10">
-							<textarea type="text" min="0" id="course_description" name="course_description" class="form-control">
-
-							</textarea>
+							<textarea type="text" min="0" id="course_description" name="course_description" class="form-control"></textarea>
 							<span class="help-block"></span>
 						</div>
 					</div>
@@ -155,7 +153,7 @@
 						<span class="help-block"></span>
 					</div>
 
-				</div>
+				</form><!--form-->
 			</div>
 		</div>
 	</div>
@@ -171,7 +169,7 @@
 				<h4 class="modal-title">Membro</h4>
 			</div>
 			<div class="modal-body">
-				<div id="form_member">
+				<form id="form_member">
 					<input type="hidden" name="member_id">
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nome</label>
@@ -199,9 +197,7 @@
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Descrição</label>
 						<div class="col-lg-10">
-							<textarea type="text" min="0" id="member_description" name="member_description" class="form-control">
-
-							</textarea>
+							<textarea type="text" min="0" id="member_description" name="member_description" class="form-control"></textarea>
 							<span class="help-block"></span>
 						</div>
 					</div>
@@ -213,7 +209,7 @@
 						<span class="help-block"></span>
 					</div>
 
-				</div>
+				</form><!--form-->
 			</div>
 		</div>
 	</div>
@@ -229,7 +225,7 @@
 				<h4 class="modal-title">Usuário</h4>
 			</div>
 			<div class="modal-body">
-				<div id="form_user">
+				<form id="form_user">
 					<input type="hidden" name="user_id">
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Login</label>
@@ -287,7 +283,7 @@
 						<span class="help-block"></span>
 					</div>
 
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
