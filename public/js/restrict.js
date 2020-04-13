@@ -1,115 +1,180 @@
 $(function() {
-
-    $('#btn_add_course').click(function() {
+    $("#btn_add_course").click(function() {
         clearErrors();
-        $('#form_course')[0].reset();
-        $('#course_img_path').attr('src', '');
-        $('#modal_course').modal();
+        $("#form_course")[0].reset();
+        $("#course_img_path").attr("src", "");
+        $("#modal_course").modal();
     });
 
-    $('#btn_add_member').click(function() {
+    $("#btn_add_member").click(function() {
         clearErrors();
-        $('#form_member')[0].reset();
-        $('#member_photo_path').attr('src', '');
-        $('#modal_member').modal();
+        $("#form_member")[0].reset();
+        $("#member_photo_path").attr("src", "");
+        $("#modal_member").modal();
     });
 
-    $('#btn_add_user').click(function() {
+    $("#btn_add_user").click(function() {
         clearErrors();
-        $('#form_user')[0].reset();
-        $('#modal_user').modal();
+        $("#form_user")[0].reset();
+        $("#modal_user").modal();
     });
 
-    $('#btn_upload_course_img').change(function() {
-        uploadImg($(this), $('#course_img_path'), $('#course_img'))
+    $("#btn_upload_course_img").change(function() {
+        uploadImg($(this), $("#course_img_path"), $("#course_img"));
     });
 
-    $('#btn_upload_member_photo').change(function() {
-        uploadImg($(this), $('#member_photo_path'), $('#member_photo'))
+    $("#btn_upload_member_photo").change(function() {
+        uploadImg($(this), $("#member_photo_path"), $("#member_photo"));
     });
 
     // SUBMISSÃO DO FORMULÁRIO CURSOS
 
-    $('#form_course').submit(function(e) {
-
+    $("#form_course").submit(function(e) {
         e.preventDefault();
 
         $.ajax({
-            type: 'POST',
-            url: BASE_URL + 'restrict/ajaxsavecourse',
-            dataType: 'json',
+            type: "POST",
+            url: BASE_URL + "restrict/ajaxsavecourse",
+            dataType: "json",
             data: $(this).serialize(),
             beforeSend: function() {
                 clearErrors();
-                $('#btn_save_course').siblings('.help-block')
-                    .html(loadingImg('Verificando...'));
+                $("#btn_save_course")
+                    .siblings(".help-block")
+                    .html(loadingImg("Verificando..."));
             },
             success: function(response) {
                 clearErrors();
                 if (response.status) {
-                    $('#modal_course').modal('hide');
+                    $("#modal_course").modal("hide");
                 } else {
                     showErrorsModal(response.error_list);
                 }
-
-            }
+            },
         });
     });
 
     // SUBMISSÃO DO FORMULÁRIO MEMBER
 
-    $('#form_member').submit(function(e) {
-
+    $("#form_member").submit(function(e) {
         e.preventDefault();
 
         $.ajax({
-            type: 'POST',
-            url: BASE_URL + 'restrict/ajaxsavemember',
-            dataType: 'json',
+            type: "POST",
+            url: BASE_URL + "restrict/ajaxsavemember",
+            dataType: "json",
             data: $(this).serialize(),
             beforeSend: function() {
                 clearErrors();
-                $('#btn_save_member').siblings('.help-block')
-                    .html(loadingImg('Verificando...'));
+                $("#btn_save_member")
+                    .siblings(".help-block")
+                    .html(loadingImg("Verificando..."));
             },
             success: function(response) {
                 clearErrors();
                 if (response.status) {
-                    $('#modal_member').modal('hide');
+                    $("#modal_member").modal("hide");
                 } else {
                     showErrorsModal(response.error_list);
                 }
-
-            }
+            },
         });
     });
 
     // SUBMISSÃO DO FORMULÁRIO USUARIO
 
-    $('#form_user').submit(function(e) {
-
+    $("#form_user").submit(function(e) {
         e.preventDefault();
 
         $.ajax({
-            type: 'POST',
-            url: BASE_URL + 'restrict/ajaxsaveuser',
-            dataType: 'json',
+            type: "POST",
+            url: BASE_URL + "restrict/ajaxsaveuser",
+            dataType: "json",
             data: $(this).serialize(),
             beforeSend: function() {
                 clearErrors();
-                $('#btn_save_user').siblings('.help-block')
-                    .html(loadingImg('Verificando...'));
+                $("#btn_save_user")
+                    .siblings(".help-block")
+                    .html(loadingImg("Verificando..."));
             },
             success: function(response) {
                 clearErrors();
                 if (response.status) {
-                    $('#modal_user').modal('hide');
+                    $("#modal_user").modal("hide");
                 } else {
                     showErrorsModal(response.error_list);
                 }
-
-            }
+            },
         });
     });
+
+    // EDITA DADOS DO USUÁRIO LOGADO.
+    $("#btn_your_user").click(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: BASE_URL + "restrict/ajaxgetuserdata",
+            dataType: "json",
+            data: { user_id: $(this).attr("user_id") },
+            success: function(response) {
+                clearErrors();
+                $("#form_user")[0].reset();
+                $.each(response.input, function(id, value) {
+                    $(`#${id}`).val(value);
+                });
+                $("#modal_user").modal();
+            },
+        });
+    });
+
+    // CHAMANDO DATATABLE E PERSONALIZANDO - CURSOS
+
+    var dt_course = $("#dt_courses").DataTable({
+        autoWidth: false,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: BASE_URL + "restrict/ajaxlistcourse",
+            type: "POST",
+        },
+        columnDefs: [
+            { targets: "no-sort", orderable: false },
+            { targets: "dt-center", className: "dt-center" },
+        ],
+    });
+
+    // CHAMANDO DATATABLE E PERSONALIZANDO - MEMBROS
+
+    var dt_team = $("#dt_team").DataTable({
+        autoWidth: false,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: BASE_URL + "restrict/ajaxlistmember",
+            type: "POST",
+        },
+        columnDefs: [
+            { targets: "no-sort", orderable: false },
+            { targets: "dt-center", className: "dt-center" },
+        ],
+    });
+
+    // CHAMANDO DATATABLE E PERSONALIZANDO - USUARIOS
+
+    var dt_users = $("#dt_users").DataTable({
+        autoWidth: false,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: BASE_URL + "restrict/ajaxlistuser",
+            type: "POST",
+        },
+        columnDefs: [
+            { targets: "no-sort", orderable: false },
+            { targets: "dt-center", className: "dt-center" },
+        ],
+    });
+
 
 });

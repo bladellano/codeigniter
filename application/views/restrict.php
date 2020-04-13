@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="col-lg-offset-5 col-lg-2 text-center">
 				<div class="form-group">
-					<a class="btn btn-link" href=""><i class="fa fa-user"></i></a>
+					<a id="btn_your_user" class="btn btn-link" href="" user_id="<?=$user_id?>"><i class="fa fa-user"></i></a>
 					<a class="btn btn-link" href="restrict/logoff"><i class="fa fa-sign-out"></i></a>
 				</div>
 			</div>
@@ -32,17 +32,16 @@
 					<h2 class="text-center">Gerenciar Cursos</h2>
 					<a class="btn btn-primary" id="btn_add_course"><i class="fa fa-plus">&nbsp; Adicionar Curso</i></a>
 					<table id="dt_courses" class="table table-striped table-bordered">
-						<hread>
-							<tr class="tableheader"></tr>
-							<th>Nome</th>
-							<th>Imagem</th>
-							<th>Duração</th>
-							<th>Descrição</th>
-							<th>Ações</th>
+						<thead>
+							<tr class="tableheader">
+								<th class="dt-center">Nome</th>
+								<th class="dt-center no-sort">Imagem</th>
+								<th class="dt-center">Duração</th>
+								<th class="no-sort">Descrição</th>
+								<th class="dt-center no-sort">Ações</th>
 							</tr>
-						</hread>
+						</thead>
 						<tbody>
-
 						</tbody>
 					</table>
 				</div>
@@ -54,14 +53,14 @@
 					<h2 class="text-center">Gerenciar Equipe</h2>
 					<a class="btn btn-primary" id="btn_add_member"><i class="fa fa-plus">&nbsp; Adicionar Membro</i></a>
 					<table id="dt_team" class="table table-striped table-bordered">
-						<hread>
+						<thead>
 							<tr class="tableheader"></tr>
-							<th>Nome</th>
-							<th>Foto</th>
-							<th>Descrição</th>
-							<th>Ações</th>
+								<th class="dt-center">Nome</th>
+								<th class="dt-center no-sort">Photo</th>
+								<th class="no-sort">Descrição</th>
+								<th class="dt-center no-sort">Ações</th>
 							</tr>
-						</hread>
+						</thead>
 						<tbody>
 
 						</tbody>
@@ -74,14 +73,13 @@
 					<h2 class="text-center">Gerenciar Usuários</h2>
 					<a class="btn btn-primary" id="btn_add_user"><i class="fa fa-plus">&nbsp; Adicionar Usuário</i></a>
 					<table id="dt_users" class="table table-striped table-bordered">
-						<hread>
+						<thead>
 							<tr class="tableheader"></tr>
-							<th>Login</th>
-							<th>Nome</th>
-							<th>E-mail</th>
-							<th>Ações</th>
-							</tr>
-						</hread>
+							<th class="dt-center">Login</th>
+							<th class="dt-center">Nome</th>
+							<th class="dt-center">E-mail</th>
+							<th>Ações</th>						
+						</thead>
 						<tbody>
 
 						</tbody>
@@ -105,7 +103,9 @@
 			</div>
 			<div class="modal-body">
 				<form id="form_course">
-					<input type="hidden" name="course_id">
+
+					<input id="course_id" type="hidden" name="course_id">
+
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nome</label>
 						<div class="col-lg-10">
@@ -170,7 +170,9 @@
 			</div>
 			<div class="modal-body">
 				<form id="form_member">
-					<input type="hidden" name="member_id">
+
+					<input id="member_id" type="hidden" name="member_id">
+
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Nome</label>
 						<div class="col-lg-10">
@@ -226,7 +228,9 @@
 			</div>
 			<div class="modal-body">
 				<form id="form_user">
-					<input type="hidden" name="user_id">
+
+					<input id="user_id" type="hidden" name="user_id">
+
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Login</label>
 						<div class="col-lg-10">

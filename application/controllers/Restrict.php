@@ -16,11 +16,18 @@ class Restrict extends CI_Controller
         if ($this->session->userdata("user_id")) //VERIFICA SE TEM SESSÃO ATIVA.
         {
             $data = array(
+                "styles" => array(
+                    "dataTables.bootstrap.min.css",
+                    "datatables.min.css",
+                ),
                 "scripts" => array(
+                    "sweetalert2@9.js",
+                    "datatables.min.js",
+                    "dataTables.bootstrap.min.js",
                     "util.js",
-                    "login.js",
                     "restrict.js",
                 ),
+                "user_id" => $this->session->userdata("user_id"),
             );
 
             return $this->template->show("restrict", $data);
@@ -289,8 +296,8 @@ class Restrict extends CI_Controller
             $json["status"] = 0;
         } else {
 
-            $data["password_hash"] = password_hash($data["user_password"],PASSWORD_DEFAULT);
-            
+            $data["password_hash"] = password_hash($data["user_password"], PASSWORD_DEFAULT);
+
             //ELIMINAR ALGUNS CAMPOS...
             unset($data["user_password"]);
             unset($data["user_password_confirm"]);
@@ -307,5 +314,181 @@ class Restrict extends CI_Controller
 
         echo json_encode($json);
     }
+
+    //FUNÇÃO PARA PEGAR DADOS DO USUÁRIO LOGADO
+    public function ajaxGetUserData()
+    {
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+
+        $json = array();
+        $json["status"] = 1;
+        $json["input"] = [];
+
+        $this->load->model("UsersModel");
+
+        $user_id = $this->input->post("user_id");
+        $data = $this->UsersModel->getData($user_id)->result_array()[0]; //FUNÇÃO C.I result_array()
+
+        $json["input"]["user_id"] = $data["user_id"];
+        $json["input"]["user_login"] = $data["user_login"];
+        $json["input"]["user_full_name"] = $data["user_full_name"];
+        $json["input"]["user_email"] = $data["user_email"];
+        $json["input"]["user_email_confirm"] = $data["user_email"];
+        $json["input"]["user_password"] = $data["password_hash"];
+        $json["input"]["user_password_confirm"] = $data["password_hash"];
+
+        echo json_encode($json);
+    }
+
+    //AJAX PARA LISTAR OS CURSOS COM DATATABLES
+
+    public function ajaxListCourse(){
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+        
+        $this->load->model("CoursesModel");
+
+        $courses = $this->CoursesModel->getDataTable();
+
+        $data = array();
+
+        foreach ($courses as $course) {
+
+            $row = array();
+
+            $row[] = $course->course_name;
+
+            if ($course->course_img) {
+                $row[] = '<img src="' . base_url() . $course->course_img . '" style="max-height:100px;max-width:100px;" >';
+            } else {
+                $row[] = "";
+            }
+            $row[] = $course->course_duration;
+            $row[] = '<div class="description">' . $course->course_description . '</div>';
+            $row[] = '<div style="display:inline-block;">
+                <button class="btn btn-primary btn-edit-course"
+                course_id="' . $course->course_id . '">
+                <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-del-course"
+                course_id="' . $course->course_id . '">
+                <i class="fa fa-times"></i>
+                </button></div>';
+
+            $data[] = $row;
+        }
+        $json = array(
+            "draw" => $this->input->post("draw"),
+            "recordsTotal" => $this->CoursesModel->recordsTotal(),
+            "recordsFiltered" => $this->CoursesModel->recordsFiltered(),
+            "data" => $data,
+        );
+
+        echo json_encode($json);
+
+    }
+
+    //AJAX PARA LISTAR OS MEMBROS COM DATATABLES
+    public function ajaxListMember(){
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+        
+        $this->load->model("TeamModel");
+
+        $team = $this->TeamModel->getDataTable();
+
+        $data = array();
+
+        foreach ($team as $member) {
+
+            $row = array();
+
+            $row[] = $member->member_name;
+
+            if ($member->member_photo) {
+                $row[] = '<img src="' . base_url() . $member->member_photo . '" style="max-height:100px;max-width:100px;" >';
+            } else {
+                $row[] = "";
+            }
+            $row[] = '<div class="description">' . $member->member_description . '</div>';
+            $row[] = '<div style="display:inline-block;">
+                <button class="btn btn-primary btn-edit-course"
+                member_id="' . $member->member_id . '">
+                <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-del-course"
+                member_id="' . $member->member_id . '">
+                <i class="fa fa-times"></i>
+                </button></div>';
+
+            $data[] = $row;
+        }
+        $json = array(
+            "draw" => $this->input->post("draw"),
+            "recordsTotal" => $this->TeamModel->recordsTotal(),
+            "recordsFiltered" => $this->TeamModel->recordsFiltered(),
+            "data" => $data,
+        );
+
+        echo json_encode($json);
+
+    }
+
+    //AJAX PARA LISTAR OS USUARIOS COM DATATABLES
+    public function ajaxListUser(){
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+        
+        $this->load->model("UsersModel");
+
+        $users = $this->UsersModel->getDataTable();
+
+        $data = array();
+
+        foreach ($users as $user) {
+
+            $row = array();
+
+            $row[] = $user->user_login;       
+            $row[] =  $user->user_full_name;
+            $row[] =  $user->user_email;
+
+            $row[] = '<div style="display:inline-block;">
+
+                <button class="btn btn-primary btn-edit-course"
+                user_id="' . $user->user_id . '">
+                <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-del-course"
+                user_id="' . $user->user_id . '">
+                <i class="fa fa-times"></i>
+                </button></div>';
+
+            $data[] = $row;
+        }
+        $json = array(
+            "draw" => $this->input->post("draw"),
+            "recordsTotal" => $this->UsersModel->recordsTotal(),
+            "recordsFiltered" => $this->UsersModel->recordsFiltered(),
+            "data" => $data,
+        );
+
+        echo json_encode($json);
+
+    }
+
 
 }
