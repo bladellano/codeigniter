@@ -173,6 +173,8 @@ class Restrict extends CI_Controller
 
                 $data["course_img"] = "/public/images/courses/" . $file_name;
 
+            } else {
+                unset($data["course_img"]);
             }
 
             if (empty($data["course_id"])) {
@@ -221,6 +223,8 @@ class Restrict extends CI_Controller
 
                 $data["member_photo"] = "/public/images/team/" . $file_name;
 
+            } else {
+                unset($data["member_photo"]);
             }
 
             if (empty($data["member_id"])) {
@@ -315,7 +319,63 @@ class Restrict extends CI_Controller
         echo json_encode($json);
     }
 
-    //FUNÇÃO PARA PEGAR DADOS DO USUÁRIO LOGADO
+       //FUNÇÃO PARA PEGAR DADOS DO CURSO
+
+       public function ajaxGetMemberData()
+       {
+   
+           if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+           {
+               die("Nenhum acesso de script direto permitido.");
+           }
+   
+           $json = array();
+           $json["status"] = 1;
+           $json["input"] = [];
+   
+           $this->load->model("TeamModel");
+   
+           $member_id = $this->input->post("member_id");
+           $data = $this->TeamModel->getData($member_id)->result_array()[0]; //FUNÇÃO C.I result_array()
+   
+           $json["input"]["member_id"] = $data["member_id"];
+           $json["input"]["member_name"] = $data["member_name"];
+           $json["input"]["member_description"] = $data["member_description"];   
+   
+           $json["img"]["member_photo_path"] = base_url() . $data["member_photo"];
+   
+           echo json_encode($json);
+       }
+    //FUNÇÃO PARA PEGAR DADOS DO CURSO
+
+    public function ajaxGetCourseData()
+    {
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+
+        $json = array();
+        $json["status"] = 1;
+        $json["input"] = [];
+
+        $this->load->model("CoursesModel");
+
+        $course_id = $this->input->post("course_id");
+        $data = $this->CoursesModel->getData($course_id)->result_array()[0]; //FUNÇÃO C.I result_array()
+
+        $json["input"]["course_id"] = $data["course_id"];
+        $json["input"]["course_name"] = $data["course_name"];
+        $json["input"]["course_duration"] = $data["course_duration"];
+        $json["input"]["course_description"] = $data["course_description"];   
+
+        $json["img"]["course_img_path"] = base_url() . $data["course_img"];
+
+        echo json_encode($json);
+    }
+
+
     public function ajaxGetUserData()
     {
 
@@ -343,6 +403,64 @@ class Restrict extends CI_Controller
 
         echo json_encode($json);
     }
+
+    //AJAX QUE DELETA COURSE
+    public function ajaxDeleteCourseData()
+    {
+
+        if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+        {
+            die("Nenhum acesso de script direto permitido.");
+        }
+
+        $json = array();
+        $json["status"] = 1;
+     
+        $this->load->model("CoursesModel");
+
+        $course_id = $this->input->post("course_id");
+        $this->CoursesModel->delete($course_id);       
+        echo json_encode($json);
+    }
+
+       //AJAX QUE DELETA MEMBER
+       public function ajaxDeleteMemberData()
+       {
+   
+           if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+           {
+               die("Nenhum acesso de script direto permitido.");
+           }
+   
+           $json = array();
+           $json["status"] = 1;
+        
+           $this->load->model("TeamModel");
+   
+           $member_id = $this->input->post("member_id");
+           $this->TeamModel->delete($member_id);       
+           echo json_encode($json);
+       }
+
+        //AJAX QUE DELETA USER
+        public function ajaxDeleteUserData()
+        {
+    
+            if (!$this->input->is_ajax_request()) //FUNÇÃO DO C.I QUE VERIFICA SE É UMA REQUISIÇÃO AJAX.
+            {
+                die("Nenhum acesso de script direto permitido.");
+            }
+    
+            $json = array();
+            $json["status"] = 1;
+         
+            $this->load->model("UsersModel");
+    
+            $user_id = $this->input->post("user_id");
+            $this->UsersModel->delete($user_id);       
+            echo json_encode($json);
+        }
+ 
 
     //AJAX PARA LISTAR OS CURSOS COM DATATABLES
 
@@ -422,11 +540,11 @@ class Restrict extends CI_Controller
             }
             $row[] = '<div class="description">' . $member->member_description . '</div>';
             $row[] = '<div style="display:inline-block;">
-                <button class="btn btn-primary btn-edit-course"
+                <button class="btn btn-primary btn-edit-member"
                 member_id="' . $member->member_id . '">
                 <i class="fa fa-edit"></i>
                 </button>
-                <button class="btn btn-danger btn-del-course"
+                <button class="btn btn-danger btn-del-member"
                 member_id="' . $member->member_id . '">
                 <i class="fa fa-times"></i>
                 </button></div>';
@@ -468,11 +586,11 @@ class Restrict extends CI_Controller
 
             $row[] = '<div style="display:inline-block;">
 
-                <button class="btn btn-primary btn-edit-course"
+                <button class="btn btn-primary btn-edit-user"
                 user_id="' . $user->user_id . '">
                 <i class="fa fa-edit"></i>
                 </button>
-                <button class="btn btn-danger btn-del-course"
+                <button class="btn btn-danger btn-del-user"
                 user_id="' . $user->user_id . '">
                 <i class="fa fa-times"></i>
                 </button></div>';

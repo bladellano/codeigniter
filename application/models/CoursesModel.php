@@ -14,7 +14,7 @@ class CoursesModel extends CI_Model
             $this->db->select($select);
         }
         $this->db->from("courses");
-        $this->db->where("user", $id);
+        $this->db->where("course_id", $id);
         return $this->db->get();
     }
     public function insert($data)
@@ -74,7 +74,6 @@ class CoursesModel extends CI_Model
         }
 
         $this->db->from("courses");
-
 
         if (isset($search)) {
             $first = true;
