@@ -8,6 +8,11 @@ class TeamModel extends CI_Model
         $this->load->database();
     }
 
+    public function showTeam(){
+        $this->db->from("team");
+        return $this->db->get()->result_array();
+    }
+
     public function getData($id, $select = null)
     {
         if (!empty($select)) {

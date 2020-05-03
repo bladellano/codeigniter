@@ -124,7 +124,7 @@
 								<i class="fa fa-upload"></i>&nbsp;&nbsp;Importa imagem
 								<input type="file" id="btn_upload_course_img" accept="image/*" style="display:none">
 							</label>
-							<input id="course_img" name="course_img">
+							<input hidden id="course_img" name="course_img">
 							<!-- <input type="file" accept="image/*" id="course_img" name="course_img" class="form-control"> -->
 							<span class="help-block"></span>
 						</div>
@@ -191,7 +191,7 @@
 								<i class="fa fa-upload"></i>&nbsp;&nbsp;Importa foto
 								<input type="file" id="btn_upload_member_photo" accept="image/*" style="display:none">
 							</label>
-							<input id="member_photo" name="member_photo">
+							<input hidden id="member_photo" name="member_photo">
 							<span class="help-block"></span>
 						</div>
 					</div>
